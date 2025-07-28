@@ -12,7 +12,7 @@
 ![alt-text](./mongo1.png "Replica Set")
 ### Replica sets offer high availability, fault tolerance, and improved read capacity through data redundancy. However, they also introduce complexity in setup and maintenance, potential performance bottlenecks with replication lag, and increased storage and resource requirements
 
-# What is Sharding?
+## What is Sharding?
 ### Sharding is a method for distributing data across multiple machines.
 ### MongoDB uses sharding to support deployments with very large data sets and high throughput operations. Database systems with large data sets or high throughput applications can challenge the capacity of a single server.
 ### For example, high query rates can exhaust the CPU capacity of the server. Working set sizes larger than the system's RAM stress the I/O capacity of disk drives.
