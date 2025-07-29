@@ -21,3 +21,57 @@
 # MongoDB Use Cases
 ### 1. Customer service applications: MongoDB is used in customer service applications to manage and analyze unstructured data from various sources. Its scalability and flexible schema design enable the creation of responsive and efficient customer service platforms. For example, eBay uses MongoDB to store and manage customer interactions, enhancing their service quality.
 ### 2. Content management systems: MongoDB is widely used in content management systems (CMS) because it handles various data types and formats. Its JSON-like BSON format allows for easy storage and retrieval of multimedia content, making it a preferred choice for CMS platforms. For example, The New York Times uses MongoDB to manage its vast articles and multimedia content archive.
+# Class Notes
+### MongoDB syntax
+``` 
+use spartadb
+``` 
+``` 
+db.createCollection("academy")
+```
+```
+db.academy.insertOne({name:"New document"})
+```
+```
+db.academy.insertMany([{"course":"Data Engineering", "length":10}, {"course":"Data Analysis", "length":8}])
+```
+```
+db.academy.insertMany([{"first_name":"Xavier"}, {"sur_name":"Francis"}, {"stream":"data_engineering"}, {"course_id":504}, {"Trainer":"Luke"}])
+```
+```
+db.academy.insertOne({
+  name:"David",
+  course:"Data Engineering",
+  trainer:{name:"Luke", expertise:"Data"}
+})
+```
+```
+db.createCollection("students")
+```
+```
+db.students.insertOne(
+  {
+    name:"Mr S. Global",
+    year: NumberInt(2020),
+    score: 88.2,
+    course: "Data",
+    address: {
+      city: "Birmingham",
+    }
+  }
+)
+```
+```
+show collections
+```
+```
+db.getCollectionNames()
+```
+```
+db.students.find({})
+```
+```
+db.academy.find({})
+```
+
+ 
