@@ -22,7 +22,7 @@
 ### 1. Customer service applications: MongoDB is used in customer service applications to manage and analyze unstructured data from various sources. Its scalability and flexible schema design enable the creation of responsive and efficient customer service platforms. For example, eBay uses MongoDB to store and manage customer interactions, enhancing their service quality.
 ### 2. Content management systems: MongoDB is widely used in content management systems (CMS) because it handles various data types and formats. Its JSON-like BSON format allows for easy storage and retrieval of multimedia content, making it a preferred choice for CMS platforms. For example, The New York Times uses MongoDB to manage its vast articles and multimedia content archive.
 # Class Notes
-### MongoDB syntax
+## MongoDB syntax
 ``` 
 use spartadb
 ``` 
@@ -38,6 +38,12 @@ db.academy.insertMany([{"course":"Data Engineering", "length":10}, {"course":"Da
 ```
 db.academy.insertMany([{"first_name":"Xavier"}, {"sur_name":"Francis"}, {"stream":"data_engineering"}, {"course_id":504}, {"Trainer":"Luke"}])
 ```
+## Data Modelling in MongoDB
+### There are two kind of main ways  we can do data modeling in MongoDB in particular, embedding and Referencing
+## Embedding
+### Embedding is a fairly simple concept in MongoDB.It involves placing sub-documents inside a larger document — essentially, documents within documents. This technique is known as embedding related documents.Embedding is especially suitable for one-to-one and one-to-many relationships. While this might not always be the perfect approach for every use case, it's often the preferred method when normalization isn’t necessary.For example, let’s consider a training course. You can embed related information, such as modules or lessons, directly inside the course document. We’ll look at that example in a moment.
+![alt-text](./embedding.png "Embedding")
+## An example of embedding
 ```
 db.academy.insertOne({
   name:"David",
@@ -45,6 +51,10 @@ db.academy.insertOne({
   trainer:{name:"Luke", expertise:"Data"}
 })
 ```
+
+## Referencing
+### Referencing is another way to establish relationships between documents in MongoDB.This approach is more suitable for normalized data because it uses some kind of ID to connect documents.Unlike embedding, where you store a document inside another document (resulting in just one document), referencing involves keeping documents separate and linking them by reference. For example, you might reference a user document in a contact document or an access document.Referencing helps avoid data duplication and reduces redundancy, which is useful for maintaining consistency. However, it comes with a trade-off: lower read performance, since the database may need to perform multiple queries to fetch related data.That said, if you're dealing with many-to-many relationships, referencing is usually the only practical solution.
+![alt-text](./referencing.png "Referencing")
 ```
 db.createCollection("students")
 ```
