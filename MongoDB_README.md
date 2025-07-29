@@ -93,5 +93,120 @@ db.students.find({})
 ```
 db.academy.find({})
 ```
+## working with a database called 'starwars' database and collection  called 'characters'
+#### initiating the database by using 'use databasenaeme'
+```
+use starwars
+```
+## Find out information
+### listing all the information related to character 'name'
+```
+db.characters.find({name: "Ackbar"})
+```
+### format the output of a query so it's easier for humans to read
+```
+db.characters.find({name: "Ackbar"}).pretty
+```
+### if you need specific information from a charcater
+```
+db.characters.find({name: "Chewbacca"}, {name:1, eye_color:1})
+```
+### To remove id number
+```
+db.characters.find({name: "Chewbacca"}, {_id:0, name:1, eye_color:1})
+```
+### To get information from an embedded document (document insiside a document)
+```
+db.characters.find({name: "Ackbar"}, {_id:0, name:1, "species.name":1})
+```
+### To  find out the 'homeworld name of all the characters who's species name is "Human"
+```
+db.characters.find(
+  {
+  "species.name" : "Human"
+  },
+  {name:1,
+   "species.name": 1,
+   "homeworld.name": 1,
+   _id:0
+  }
+)
+```
+## Filtering based on value
+### Filter the data based on the eye color using $in and write the name and eye color of the character 
+```
+db.characters.find(
+  {
+    eye_color:{
+      $in:["yellow", "orange"]
+    }
+  },
+  {
+    name: 1,
+    eye_color: 1
+  }
+)
+```
+### female characters with blue eye
+```
+db.characters.find(
+  {
+    gender: "female",
+    eye_color: "blue"
+  },
+  {_id: 0,
+   name: 1,
+   gender: 1,
+   eye_color: 1
+  }
+)
+```
+### Male characters with red eye
+```
+db.characters.find(
+  {
+    gender: "male",
+    eye_color: "red"
+  },
+  {_id: 0,
+   name: 1,
+   gender: 1,
+   eye_color: 1
+  }
+```
+### Usage of '$and:[]' to get all female characters with blue eyes
+```
+db.characters.find(
+  {
+    $and:[
+      {eye_color: "blue"},
+      {gender: "female"}
+    ]
+  },
+  {
+    _id: 0,
+    name: 1,
+    gender: 1,
+    eye_color: 1
+  }
+)
+```
+### Usage of $or:[] to get all character who are female or with blue eyes
+```
+db.characters.find(
+  {
+    $or:[
+      {eye_color: "blue"},
+      {gender: "female"}
+    ]
+  },
+  {
+    _id: 0,
+    name: 1,
+    gender: 1,
+    eye_color: 1
+  }
+)
+```
+## Comparison operators
 
- 
