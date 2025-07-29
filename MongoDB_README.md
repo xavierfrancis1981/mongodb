@@ -22,16 +22,21 @@
 ### 1. Customer service applications: MongoDB is used in customer service applications to manage and analyze unstructured data from various sources. Its scalability and flexible schema design enable the creation of responsive and efficient customer service platforms. For example, eBay uses MongoDB to store and manage customer interactions, enhancing their service quality.
 ### 2. Content management systems: MongoDB is widely used in content management systems (CMS) because it handles various data types and formats. Its JSON-like BSON format allows for easy storage and retrieval of multimedia content, making it a preferred choice for CMS platforms. For example, The New York Times uses MongoDB to manage its vast articles and multimedia content archive.
 # Class Notes
-## MongoDB syntax
+## MongoDB syntaxes
+### Switches the current database context to spartadb
 ``` 
 use spartadb
 ``` 
+### explicitly create a new collection named "academy" in the current database.
+
 ``` 
 db.createCollection("academy")
 ```
+### inserts a single document into the academy collection in the current database.
 ```
 db.academy.insertOne({name:"New document"})
 ```
+### inserts multiple documents into the academy collection in one operation.
 ```
 db.academy.insertMany([{"course":"Data Engineering", "length":10}, {"course":"Data Analysis", "length":8}])
 ```
@@ -55,9 +60,11 @@ db.academy.insertOne({
 ## Referencing
 ### Referencing is another way to establish relationships between documents in MongoDB.This approach is more suitable for normalized data because it uses some kind of ID to connect documents.Unlike embedding, where you store a document inside another document (resulting in just one document), referencing involves keeping documents separate and linking them by reference. For example, you might reference a user document in a contact document or an access document.Referencing helps avoid data duplication and reduces redundancy, which is useful for maintaining consistency. However, it comes with a trade-off: lower read performance, since the database may need to perform multiple queries to fetch related data.That said, if you're dealing with many-to-many relationships, referencing is usually the only practical solution.
 ![alt-text](./referencing.png "Referencing")
+### explicitly create a new collection called "students" in the current database.
 ```
 db.createCollection("students")
 ```
+### command that inserts a single document into the students collection.
 ```
 db.students.insertOne(
   {
@@ -71,12 +78,15 @@ db.students.insertOne(
   }
 )
 ```
+### list all collections in the currently selected database.
 ```
 show collections
 ```
+### return an array of all collection names in the current database.
 ```
 db.getCollectionNames()
 ```
+### query that retrieves all documents from the students collection.
 ```
 db.students.find({})
 ```
