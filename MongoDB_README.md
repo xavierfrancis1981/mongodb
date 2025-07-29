@@ -209,4 +209,15 @@ db.characters.find(
 )
 ```
 ## Comparison operators
-
+![alt-text](./opearors_mongo.png "comparison_operators") 
+opearors_mongo.png
+### Find out all the characters whose heights are greater than 200
+```
+db.characters.find(
+  {height:{$gt:200}},
+  {_id: 0,
+   name: 1,
+   height: 1
+  }
+)
+```
