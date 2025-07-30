@@ -221,3 +221,139 @@ db.characters.find(
   }
 )
 ```
+## Aggregate
+Aggregation in MongoDB works based on a pipeline. It's basically done in multiple stages, similar to how we've been running multiple queries to reach a final result.
+For example, we might first select documents that match certain criteria, and then transform them to produce the aggregated result. Each stage of the pipeline is provided as an element in an array to the .aggregate() method. So, it's similar to what we've been doing — but instead of chaining queries, we'll use .aggregate() and pass in the different stages of the aggregation process.
+### Total height of all humans in the starwars characters
+```
+db.characters.aggregate([
+  {$match: {"species.name": "Human"}},
+  {$group: {_id: null, total: {$sum:"$height"}}}
+])
+```
+### Total height of all male and female in the starwars characters
+```
+db.characters.aggregate([
+  {$match: {"species.name": "Human"}},
+  {$group: {_id: "$gender", total: {$sum:"$height"}}}
+])
+```
+### Find maximum height from homeworld
+```
+db.characters.aggregate([
+  {$group: {_id:"homeworld.name", max:{$max:"$height"}}}
+])
+```
+### Single purpose Aggregation
+single-purpose aggregation refers to the idea that some types of aggregation don’t actually require the .aggregate() method. In some cases, you can just call specific methods directly. If you need to perform more complex operations, you’d use .aggregate(), but for simpler tasks like getting distinct values or counts, you can use built-in methods.
+For example: db.characters.distinct("fieldName").
+### Find distinct species name
+```
+db.characters.distinct("species.name")
+```
+### Total number of Human species
+```
+db.characters.count({"species.name": "Human"})
+```
+### Average mass and species count
+```
+db.characters.aggregate([
+  {
+    $group: {
+      _id: "$species.name",
+      avg: {$avg: "$mass"},
+      count: {$sum: 1}
+    }
+  }
+]).toArray(
+```
+### Avg mass and species count, no nulls and ascending:
+```
+db.characters.aggregate([
+  {
+    $group: {
+      _id: "$species.name",
+      avg: {$avg: "$mass"},
+      count: {$sum: 1}
+    }
+  }, { $match: {avg: {$ne: null}}},
+  {$sort: {avg: 1}}
+]).toArray(
+```
+More on aggregate function can be found here
+https://docs.mongodb.com/manual/reference/operator/aggregation/#accumulators-group
+## Referencing
+When working with MongoDB, you have two options for modeling related data: embedded documents or references.
+What we’re going to do now is quickly explore how to create and use manual references in MongoDB.
+Specifically, we'll add some starships and assign a reference to the people (characters) associated with them.
+We'll store these references in the starships collection by referencing objects from the characters collection.
+So first, we’ll start with Darth Vader. To do that, we’ll need to find his ObjectId, since we’re going to reference it in our new document.
+### get object_id
+```
+db.characters.find({name: "Darth Vader"}, {_id:1})
+```
+### create a collection called "starships"
+```
+db.createCollection("starships")
+```
+### insert a document to startships with the same object id
+```
+db.starships.insertOne({
+  name: "TIE Advanced x1",
+  model: "Twin Ion Engine Advanced x1",
+  manufacturer: "Sienar Fleet Systems",
+  length: 9.2,
+  max_atmosphering_speed: 1200,
+  crew: 1,passengers: 0,
+  pilot: ObjectId("6889b19ac92717b013906ea1")})
+```
+So, we can use the $lookup stage within an aggregation pipeline to perform a join — for example, to add a field from related data in another collection.
+```
+db.starships.aggregate([
+  {$lookup: {
+    from: "characters",
+    localField: "pilot",
+    foreignField: "_id",
+    as: "matched_pilot"
+  }}
+])
+```
+Let's add another starship just to demonstrate how this works. So, the previous example had just one reference — that was Darth Vader’s starship, which had a single pilot. Now, let’s look at the Millennium Falcon, a ship that has multiple pilots — multiple people use that ship. This is just to demonstrate that referencing multiple documents is also possible.
+```
+db.characters.find(
+  {name: {$in: ["Chewbacca", "Han Solo", "Lando Calrissian", "Nien Nunb"]}}, 
+  {_id: 1})
+```
+```
+db.starships.insertOne({
+  name: "Millenium Falcon",
+  model: "YT-1300 Light Freighter",
+  manufacturer: "Corellian Engineering Corporation",
+  length: 34.37,
+  max_atmosphering_speed: 1050,
+  crew: 4,
+  passengers: 6,
+  pilot: [ObjectId("68889775331e364b163e41be"),ObjectId("68889775331e364b163e41e3"),ObjectId("68889775331e364b163e41f5"),ObjectId("68889775331e364b163e41ff")]})
+```
+```
+db.starships.aggregate([
+  {$lookup: {
+    from: "characters",
+    localField: "pilot",
+    foreignField: "_id",
+    as: "matched_pilot"
+  }}
+])
+```
+```
+db.starships.aggregate([
+  {$lookup: {
+    from: "characters",
+    localField: "pilot",
+    foreignField: "_id",
+    as: "matched_pilot"
+  }},
+  {$project:{name: 1, model: 1, "matched_pilot.name": 1}}
+])
+```
+
