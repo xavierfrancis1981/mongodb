@@ -210,8 +210,7 @@ db.characters.find(
 )
 ```
 ## Comparison operators
-![alt-text](./opearors_mongo.png "comparison_operators") 
-opearors_mongo.png
+![alt-text](./opearors_mongo.png "comparison_operators")
 ### Find out all the characters whose heights are greater than 200
 ```
 db.characters.find(
