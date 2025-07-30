@@ -6,6 +6,7 @@ A collection is a grouping of MongoDB documents. Documents within a collection c
 
 # MongoDB Architecture
 ![alt-text](./mongo-arch.png "Architecture")
+
 MongoDB's architecture consists of several core components that work together to provide efficient data storage, retrieval and processing.
 ## Replica Sets
 A replica set is a group of mongod instances that maintain the same data set. A replica set contains several data bearing nodes and optionally one arbiter node. Of the data bearing nodes, one and only one member is deemed the primary node, while the other nodes are deemed secondary nodes.
